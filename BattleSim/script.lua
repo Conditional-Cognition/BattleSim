@@ -98,6 +98,4 @@ end
 function events.render()
 	local headRot = (vanilla_model.HEAD:getOriginRot() + 180) % 360 - 180
 	--host:setActionbar(string.format("pitch: %.1f  yaw: %.1f", headRot.x, headRot.y))
-	models.model.Waist.LeftArm.bone2.accessory:setVisible(InBattle)
-	animations.model.battle_idle:setPlaying(InBattle)
 end
