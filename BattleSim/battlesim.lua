@@ -74,8 +74,8 @@ end
 --// POSITIONING TEST (armor stand) //--
 local BATTLESIM_TEST_REACH = 5
 
-local testKeybind = keybinds:newKeybind("BattleSim: Position", "key.keyboard.up")
-local cancel = keybinds:newKeybind("BattleSim: Cancel", "key.keyboard.down")
+local testKeybind = keybinds:newKeybind("BattleSim: A", "key.keyboard.home")
+local cancel = keybinds:newKeybind("BattleSim: B", "key.keyboard.end")
 function testKeybind.press()
 	if not player:isLoaded() then return end
 
@@ -90,12 +90,24 @@ function testKeybind.press()
 end
 function cancel.press()
 	InBattle = false
+	PlayIdle = false
 	pings.promptOpponent(InBattle,nil)
 end
 
 function events.render()
-	--models.model.Waist.LeftArm.bone2.accessory:setVisible(InBattle)
-	animations.model.battle_idle:setPlaying(InBattle)
+	if InBattle and not PlayIdle then
+	    animations.model.battle_challenge:play()
+	else
+	    animations.model.battle_challenge:stop()
+	end
+	if InBattle then
+	    animations.model.battle_idle:setPlaying(PlayIdle)
+    else
+        animations.model.battle_idle:setPlaying(false)
+    end
+end
+function idleSwitch(bool)
+    if bool == true or bool == false then PlayIdle = bool end
 end
 
 function events.tick()
@@ -115,5 +127,9 @@ function events.tick()
 		silly:setPos(BattlePos)
 	end
 	avatar:store("battle_prompter",{opponent = challenger, challenge = InBattle})
+end
+
+function events.entity_init()
+    host:actionbar("Press "..testKeybind:getKey().." to start a battle with another competitor.")
 end
 --///-- WIP --///--
