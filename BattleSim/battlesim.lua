@@ -95,19 +95,11 @@ function cancel.press()
 end
 
 function events.render()
-	if InBattle and not PlayIdle then
-	    animations.model.battle_challenge:play()
-	else
-	    animations.model.battle_challenge:stop()
-	end
-	if InBattle then
-	    animations.model.battle_idle:setPlaying(PlayIdle)
-    else
-        animations.model.battle_idle:setPlaying(false)
-    end
+    animations.model.battle_challenge:playing(InBattle and not PlayIdle):priority(1)
+    animations.model.battle_idle:setPlaying(InBattle and PlayIdle)
 end
 function idleSwitch(bool)
-    if bool == true or bool == false then PlayIdle = bool end
+    PlayIdle = bool
 end
 
 function events.tick()
