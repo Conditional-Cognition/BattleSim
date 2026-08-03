@@ -66,9 +66,16 @@ function battlesimStartPositioning(opponent, opponentMoves)
 end
 
 function pings.promptOpponent(battle,opponent)
-	InBattle = battle
-	challenger = opponent
-	avatar:store("battle_prompter",{challenge = InBattle, opponent = challenger})
+    if not player:isLoaded() then return end
+    local opponent = world.getPlayers()[challenger]
+    if opponent
+    and opponent:getVariable()["battle_prompter"]
+    and opponent:getVariable()["battle_prompter"][1]==player:getUUID()
+    then
+        InBattle = battle
+        challenger = opponent
+        avatar:store("battle_prompter",{challenge = InBattle, opponent = challenger})
+    end
 end
 
 --// POSITIONING TEST (armor stand) //--
